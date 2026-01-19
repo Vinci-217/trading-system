@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package stock_trader;
+
+option go_package = "stock_trader/api";
+
+// 订单服务
+service OrderService {
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+    rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+    rpc GetOrder(GetOrderRequest) returns (Order);
+    rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+    rpc ExportOrders(ExportOrdersRequest) returns (ExportOrdersResponse);
+}
+
+message CreateOrderRequest {
+    int64 user_id = 1;
+    string symbol = 2;
+    string order_type = 3; // MARKET, LIMIT, STOP
+    string side = 4; // BUY, SELL
+    double price = 5;
+    int32 quantity = 6;
+}
+
+message CreateOrderResponse {
+    string order_id = 1;
+    string status = 2;
+    string message = 3;
+}
+
+message CancelOrderRequest {
+    int64 user_id = 1;
+    string order_id = 2;
+}
+
+message CancelOrderResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message GetOrderRequest {
+    int64 user_id = 1;
+    string order_id = 2;
+}
+
+message Order {
+    string order_id = 1;
+    string symbol = 2;
+    string symbol_name = 3;
+    string order_type = 4;
+    string side = 5;
+    double price = 6;
+    int32 quantity = 7;
+    int32 filled_quantity = 8;
+    string status = 9; // PENDING, PARTIAL, FILLED, CANCELLED, REJECTED
+    double fee = 10;
+    int64 created_at = 11;
+    int64 filled_at = 12;
+}
+
+message ListOrdersRequest {
+    int64 user_id = 1;
+    string symbol = 2;
+    string status = 3;
+    int32 limit = 4;
+    int32 offset = 5;
+}
+
+message ListOrdersResponse {
+    repeated Order orders = 1;
+    int32 total = 2;
+}
+
+message ExportOrdersRequest {
+    int64 user_id = 1;
+    int64 start_time = 2;
+    int64 end_time = 3;
+    string format = 4; // CSV, EXCEL
+}
+
+message ExportOrdersResponse {
+    string download_url = 1;
+    int32 total_count = 2;
+}
+
+// 交易服务
+service TradeService {
+    rpc GetTrades(GetTradesRequest) returns (ListTradesResponse);
+}
+
+message GetTradesRequest {
+    int64 user_id = 1;
+    string symbol = 2;
+    int32 limit = 3;
+    int32 offset = 4;
+}
+
+message Trade {
+    string trade_id = 1;
+    string order_id = 2;
+    string symbol = 3;
+    string side = 4;
+    double price = 5;
+    int32 quantity = 6;
+    double amount = 7;
+    double fee = 8;
+    double profit_loss = 9;
+    int64 created_at = 10;
+}
+
+message ListTradesResponse {
+    repeated Trade trades = 1;
+    int32 total = 2;
+}

@@ -1,0 +1,225 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of go coverage
+*.out
+
+# Go workspace file
+go.work
+
+# Vendor directory (if using modules)
+vendor/
+
+# Go dependencies
+go.sum
+
+# Build outputs
+bin/
+obj/
+build/
+
+# IDE and Editor directories
+.idea/
+.vscode/
+.trae/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+config.local.yaml
+*.local.*
+
+# Logs
+*.log
+logs/
+**/*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.rej
+
+# Coverage files
+coverage.out
+cover.out
+
+# Profiling files
+*.profile
+*.pprof
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Config files that shouldn't be committed
+**/config.yaml
+!**/config.example.yaml
+**/secrets/
+
+# Deployment files
+deployments/
+*.pem
+*.key
+
+# IDE project files
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Temporary build directories
+dist/
+out/
+build/
+
+# GoLand specific
+.idea_modules/
+
+# VS Code specific
+.vscode/extensions.json
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+
+# Package files
+*.tar.gz
+*.zip
+
+# CI/CD
+.circleci/
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+
+# Documentation
+site/
+docs/_site/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Frontend
+.next/
+out/
+dist/
+*.local
+
+# IDE auto-generated directories
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+*.tfvars.json
+
+# Kubernetes
+*.kubeconfig
+kubeconfig
+
+# Secrets
+*.pem
+*.key
+*.crt
+credentials.json
+service-account.json
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# Package Managers
+package-lock.json
+yarn.lock
+composer.lock
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~

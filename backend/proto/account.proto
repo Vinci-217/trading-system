@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package stock_trader;
+
+option go_package = "stock_trader/api";
+
+// 账户服务
+service AccountService {
+    rpc GetAccount(GetAccountRequest) returns (Account);
+    rpc GetPositions(GetPositionsRequest) returns (ListPositionsResponse);
+    rpc Freeze(FreezeRequest) returns (FreezeResponse);
+    rpc Unfreeze(UnfreezeRequest) returns (UnfreezeResponse);
+}
+
+message GetAccountRequest {
+    int64 user_id = 1;
+}
+
+message Account {
+    int64 user_id = 1;
+    double cash_balance = 2;
+    double frozen_balance = 3;
+    double total_assets = 4;
+    double total_profit = 5;
+    string status = 6;
+}
+
+message GetPositionsRequest {
+    int64 user_id = 1;
+}
+
+message Position {
+    string symbol = 1;
+    string symbol_name = 2;
+    int32 quantity = 3;
+    int32 available_quantity = 4;
+    double cost_price = 5;
+    double current_price = 6;
+    double market_value = 7;
+    double profit_loss = 8;
+    double profit_loss_rate = 9;
+}
+
+message ListPositionsResponse {
+    repeated Position positions = 1;
+}
+
+message FreezeRequest {
+    int64 user_id = 1;
+    double amount = 2;
+}
+
+message FreezeResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message UnfreezeRequest {
+    int64 user_id = 1;
+    double amount = 2;
+}
+
+message UnfreezeResponse {
+    bool success = 1;
+    string message = 2;
+}
