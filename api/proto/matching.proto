@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package matching;
+
+option go_package = "github.com/stock-trading-system/api/proto/matching";
+
+service MatchingService {
+    rpc SubmitOrder(SubmitOrderRequest) returns (SubmitOrderResponse);
+    rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+    rpc GetOrderBook(GetOrderBookRequest) returns (GetOrderBookResponse);
+    rpc GetMarketDepth(GetMarketDepthRequest) returns (GetMarketDepthResponse);
+}
+
+message SubmitOrderRequest {
+    string order_id = 1;
+    string user_id = 2;
+    string symbol = 3;
+    int32 side = 4;
+    int32 order_type = 5;
+    string price = 6;
+    int32 quantity = 7;
+}
+
+message SubmitOrderResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Trade trades = 3;
+    Order order = 4;
+}
+
+message CancelOrderRequest {
+    string order_id = 1;
+    string symbol = 2;
+}
+
+message CancelOrderResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+}
+
+message GetOrderBookRequest {
+    string symbol = 1;
+}
+
+message GetOrderBookResponse {
+    int32 code = 1;
+    string message = 2;
+    OrderBook order_book = 3;
+}
+
+message GetMarketDepthRequest {
+    string symbol = 1;
+    int32 level = 2;
+}
+
+message GetMarketDepthResponse {
+    int32 code = 1;
+    string message = 2;
+    MarketDepth depth = 3;
+}
+
+message Trade {
+    string trade_id = 1;
+    string order_id = 2;
+    string user_id = 3;
+    string symbol = 4;
+    int32 side = 5;
+    string price = 6;
+    int32 quantity = 7;
+    string amount = 8;
+    string counter_user_id = 9;
+    string counter_order_id = 10;
+    int64 created_at = 11;
+}
+
+message Order {
+    string order_id = 1;
+    string user_id = 2;
+    string symbol = 3;
+    int32 side = 4;
+    string price = 5;
+    int32 quantity = 6;
+    int32 filled_quantity = 7;
+    int32 remaining_quantity = 8;
+    int32 status = 9;
+    int64 created_at = 10;
+}
+
+message OrderBook {
+    string symbol = 1;
+    repeated DepthLevel bids = 2;
+    repeated DepthLevel asks = 3;
+    string last_price = 4;
+    int64 total_volume = 5;
+    string total_amount = 6;
+}
+
+message DepthLevel {
+    string price = 1;
+    int32 quantity = 2;
+    int32 order_count = 3;
+}
+
+message MarketDepth {
+    string symbol = 1;
+    repeated DepthLevel bids = 2;
+    repeated DepthLevel asks = 3;
+    int64 timestamp = 4;
+}

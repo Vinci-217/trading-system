@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package reconcile;
+
+option go_package = "github.com/stock-trading-system/api/proto/reconcile";
+
+service ReconcileService {
+    rpc ReconcileFunds(ReconcileFundsRequest) returns (ReconcileFundsResponse);
+    rpc ReconcilePositions(ReconcilePositionsRequest) returns (ReconcilePositionsResponse);
+    rpc ReconcileTrades(ReconcileTradesRequest) returns (ReconcileTradesResponse);
+    rpc FullReconcile(FullReconcileRequest) returns (FullReconcileResponse);
+    rpc GetDiscrepancies(GetDiscrepanciesRequest) returns (GetDiscrepanciesResponse);
+    rpc FixDiscrepancy(FixDiscrepancyRequest) returns (FixDiscrepancyResponse);
+}
+
+message ReconcileFundsRequest {
+    string user_id = 1;
+}
+
+message ReconcileFundsResponse {
+    int32 code = 1;
+    string message = 2;
+    FundReconciliationResult result = 3;
+}
+
+message ReconcilePositionsRequest {
+    string user_id = 1;
+    string symbol = 2;
+}
+
+message ReconcilePositionsResponse {
+    int32 code = 1;
+    string message = 2;
+    PositionReconciliationResult result = 3;
+}
+
+message ReconcileTradesRequest {
+    string user_id = 1;
+    string symbol = 2;
+    int64 start_time = 3;
+    int64 end_time = 4;
+}
+
+message ReconcileTradesResponse {
+    int32 code = 1;
+    string message = 2;
+    TradeReconciliationResult result = 3;
+}
+
+message FullReconcileRequest {
+    bool auto_fix = 1;
+}
+
+message FullReconcileResponse {
+    int32 code = 1;
+    string message = 2;
+    FullReconciliationReport report = 3;
+}
+
+message GetDiscrepanciesRequest {
+    int32 status = 1;
+    int32 type = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message GetDiscrepanciesResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Discrepancy discrepancies = 3;
+    int64 total = 4;
+}
+
+message FixDiscrepancyRequest {
+    string discrepancy_id = 1;
+    int32 fix_type = 2;
+    string remark = 3;
+    string operator = 4;
+}
+
+message FixDiscrepancyResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+}
+
+message FundReconciliationResult {
+    string user_id = 1;
+    string expected_cash_balance = 2;
+    string actual_cash_balance = 3;
+    string cash_discrepancy = 4;
+    string expected_frozen_balance = 5;
+    string actual_frozen_balance = 6;
+    string frozen_discrepancy = 7;
+    bool is_consistent = 8;
+}
+
+message PositionReconciliationResult {
+    string user_id = 1;
+    string symbol = 2;
+    int32 expected_quantity = 3;
+    int32 actual_quantity = 4;
+    int32 discrepancy = 5;
+    bool is_consistent = 6;
+}
+
+message TradeReconciliationResult {
+    string user_id = 1;
+    string symbol = 2;
+    int32 expected_trade_volume = 3;
+    int32 actual_trade_volume = 4;
+    int32 discrepancy = 5;
+    bool is_consistent = 6;
+}
+
+message FullReconciliationReport {
+    int64 start_time = 1;
+    int64 end_time = 2;
+    int32 total_accounts = 3;
+    int32 checked_accounts = 4;
+    int32 fund_discrepancies = 5;
+    int32 position_discrepancies = 6;
+    int32 trade_discrepancies = 7;
+    int32 auto_fixed = 8;
+}
+
+message Discrepancy {
+    string discrepancy_id = 1;
+    int32 type = 2;
+    string user_id = 3;
+    string symbol = 4;
+    string expected_value = 5;
+    string actual_value = 6;
+    string difference = 7;
+    int32 status = 8;
+    int64 created_at = 9;
+}

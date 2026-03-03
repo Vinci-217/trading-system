@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package market;
+
+option go_package = "github.com/stock-trading-system/api/proto/market";
+
+service MarketService {
+    rpc GetQuote(GetQuoteRequest) returns (GetQuoteResponse);
+    rpc GetQuotes(GetQuotesRequest) returns (GetQuotesResponse);
+    rpc GetKLines(GetKLinesRequest) returns (GetKLinesResponse);
+    rpc SubscribeQuote(SubscribeQuoteRequest) returns (stream Quote);
+}
+
+message GetQuoteRequest {
+    string symbol = 1;
+}
+
+message GetQuoteResponse {
+    int32 code = 1;
+    string message = 2;
+    Quote quote = 3;
+}
+
+message GetQuotesRequest {
+    repeated string symbols = 1;
+}
+
+message GetQuotesResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Quote quotes = 3;
+}
+
+message GetKLinesRequest {
+    string symbol = 1;
+    int32 period = 2;
+    int64 start_time = 3;
+    int64 end_time = 4;
+    int32 limit = 5;
+}
+
+message GetKLinesResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated KLine klines = 3;
+}
+
+message SubscribeQuoteRequest {
+    repeated string symbols = 1;
+}
+
+message Quote {
+    string symbol = 1;
+    string price = 2;
+    string open = 3;
+    string high = 4;
+    string low = 5;
+    string prev_close = 6;
+    int64 volume = 7;
+    string amount = 8;
+    string change = 9;
+    string change_pct = 10;
+    string bid_price = 11;
+    string ask_price = 12;
+    int32 bid_volume = 13;
+    int32 ask_volume = 14;
+    int64 timestamp = 15;
+}
+
+message KLine {
+    string symbol = 1;
+    int64 timestamp = 2;
+    string open = 3;
+    string high = 4;
+    string low = 5;
+    string close = 6;
+    int64 volume = 7;
+    string amount = 8;
+}

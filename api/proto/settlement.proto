@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package settlement;
+
+option go_package = "github.com/stock-trading-system/api/proto/settlement";
+
+service SettlementService {
+    rpc SettleTrade(SettleTradeRequest) returns (SettleTradeResponse);
+    rpc GetSettlementStatus(GetSettlementStatusRequest) returns (GetSettlementStatusResponse);
+}
+
+message SettleTradeRequest {
+    string trade_id = 1;
+    string buy_order_id = 2;
+    string sell_order_id = 3;
+    string buy_user_id = 4;
+    string sell_user_id = 5;
+    string symbol = 6;
+    string price = 7;
+    int32 quantity = 8;
+}
+
+message SettleTradeResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+    SettlementResult result = 4;
+}
+
+message GetSettlementStatusRequest {
+    string trade_id = 1;
+}
+
+message GetSettlementStatusResponse {
+    int32 code = 1;
+    string message = 2;
+    SettlementStatus status = 3;
+}
+
+message SettlementResult {
+    string trade_id = 1;
+    bool buyer_fund_deducted = 2;
+    bool seller_fund_credited = 3;
+    bool buyer_position_added = 4;
+    bool seller_position_reduced = 5;
+    string buyer_new_balance = 6;
+    string seller_new_balance = 7;
+}
+
+message SettlementStatus {
+    string trade_id = 1;
+    int32 status = 2;
+    repeated SettlementStep steps = 3;
+}
+
+message SettlementStep {
+    string name = 1;
+    int32 status = 2;
+    string error_message = 3;
+    int64 executed_at = 4;
+}

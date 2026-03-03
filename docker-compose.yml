@@ -1,20 +1,18 @@
-version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
-    container_name: stock_trader_mysql
+    container_name: stock_trading_mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: stock_trader
+      MYSQL_DATABASE: stock_trading
       MYSQL_CHARSET: utf8mb4
       MYSQL_COLLATION: utf8mb4_unicode_ci
     ports:
-      - "3306:3306"
+      - "13306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./scripts/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -24,10 +22,10 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: stock_trader_redis
+    container_name: stock_trading_redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "16379:6379"
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
@@ -37,44 +35,6 @@ services:
       timeout: 5s
       retries: 5
 
-  kafka:
-    image: bitnami/kafka:3.4
-    container_name: stock_trader_kafka
-    restart: unless-stopped
-    environment:
-      KAFKA_CFG_NODE_ID: 1
-      KAFKA_CFG_PROCESS_ROLES: controller,broker
-      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
-    ports:
-      - "9092:9092"
-      - "9093:9093"
-    volumes:
-      - kafka_data:/bitnami
-    healthcheck:
-      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
-      interval: 10s
-      timeout: 10s
-      retries: 10
-
-  seata:
-    image: seataio/seata-server:2.0.0
-    container_name: stock_trader_seata
-    restart: unless-stopped
-    environment:
-      SEATA_IP: seata
-      SEATA_PORT: 8091
-      STORE_MODE: file
-    ports:
-      - "8091:8091"
-    volumes:
-      - seata_data:/seata-server
-
 volumes:
   mysql_data:
   redis_data:
-  kafka_data:
-  seata_data:

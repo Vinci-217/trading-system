@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "github.com/stock-trading-system/api/proto/account";
+
+service AccountService {
+    rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+    rpc Deposit(DepositRequest) returns (DepositResponse);
+    rpc Withdraw(WithdrawRequest) returns (WithdrawResponse);
+    rpc FreezeFunds(FreezeFundsRequest) returns (FreezeFundsResponse);
+    rpc UnfreezeFunds(UnfreezeFundsRequest) returns (UnfreezeFundsResponse);
+    rpc ConfirmFreeze(ConfirmFreezeRequest) returns (ConfirmFreezeResponse);
+    rpc GetPositions(GetPositionsRequest) returns (GetPositionsResponse);
+    rpc GetPosition(GetPositionRequest) returns (GetPositionResponse);
+}
+
+message GetAccountRequest {
+    string user_id = 1;
+}
+
+message GetAccountResponse {
+    int32 code = 1;
+    string message = 2;
+    Account account = 3;
+}
+
+message Account {
+    string user_id = 1;
+    string cash_balance = 2;
+    string frozen_balance = 3;
+    string available_balance = 4;
+    string total_assets = 5;
+    int64 version = 6;
+}
+
+message DepositRequest {
+    string user_id = 1;
+    string amount = 2;
+    string transaction_id = 3;
+}
+
+message DepositResponse {
+    int32 code = 1;
+    string message = 2;
+    string new_balance = 3;
+    string flow_id = 4;
+}
+
+message WithdrawRequest {
+    string user_id = 1;
+    string amount = 2;
+    string transaction_id = 3;
+}
+
+message WithdrawResponse {
+    int32 code = 1;
+    string message = 2;
+    string new_balance = 3;
+    string flow_id = 4;
+}
+
+message FreezeFundsRequest {
+    string user_id = 1;
+    string amount = 2;
+    string transaction_id = 3;
+    string order_id = 4;
+}
+
+message FreezeFundsResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+    int64 version = 4;
+}
+
+message UnfreezeFundsRequest {
+    string user_id = 1;
+    string amount = 2;
+    string transaction_id = 3;
+    string order_id = 4;
+}
+
+message UnfreezeFundsResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+}
+
+message ConfirmFreezeRequest {
+    string user_id = 1;
+    string amount = 2;
+    string transaction_id = 3;
+    string order_id = 4;
+}
+
+message ConfirmFreezeResponse {
+    int32 code = 1;
+    string message = 2;
+    bool success = 3;
+}
+
+message GetPositionsRequest {
+    string user_id = 1;
+}
+
+message GetPositionsResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Position positions = 3;
+}
+
+message GetPositionRequest {
+    string user_id = 1;
+    string symbol = 2;
+}
+
+message GetPositionResponse {
+    int32 code = 1;
+    string message = 2;
+    Position position = 3;
+}
+
+message Position {
+    string user_id = 1;
+    string symbol = 2;
+    int32 quantity = 3;
+    int32 frozen_quantity = 4;
+    int32 available_quantity = 5;
+    string avg_cost = 6;
+    string market_value = 7;
+    string profit_loss = 8;
+    int64 version = 9;
+}
